@@ -7,10 +7,16 @@ def mask_account_card(info: str) -> str:
     Принимает строку с типом и номером карты или счета.
     Возвращает строку с типом и замаскированным номером.
     """
+    # Разделяем входную строку на слова
     parts = info.split()
+
+    # Последний элемент — это всегда номер
     number = parts[-1]
+
+    # Все элементы кроме последнего — это тип ("Карта"" или "Счет")
     card_or_account_type = " ".join(parts[:-1])
 
+    # Определяем, карта это или счет, по длине номера, и применяем нужную маску
     if len(number) == 16:
         masked_number = get_mask_card_number(number)
     elif len(number) == 20:
@@ -18,6 +24,7 @@ def mask_account_card(info: str) -> str:
     else:
         raise ValueError("Неверная длина номера. Для карты нужно 16 цифр, для счета — 20.")
 
+    # Формируем и возвращаем итоговую строку
     return f"{card_or_account_type} {masked_number}"
 
 
