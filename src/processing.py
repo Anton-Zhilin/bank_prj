@@ -42,19 +42,16 @@ if __name__ == "__main__":
     print("Выход функции filter_by_state (по умолчанию 'EXECUTED'):")
     print_list_pretty(filter_by_state(transactions))
 
-    print("-" * 60)
 
     # Проверка 2: Фильтрация если вторым значением передано 'CANCELED'
     print("Выход функции filter_by_state если вторым аргументом передано 'CANCELED':")
     print_list_pretty(filter_by_state(transactions, 'CANCELED'))
 
-    print("-" * 60)
 
     # Проверка 3: Сортировка по дате (по убыванию - сначала самые новые)
     print("Выход функции sort_by_date (сортировка по убыванию):")
     print_list_pretty(sort_by_date(transactions))
 
-    print("-" * 60)
 
     # Проверка 4: Сортировка по дате (по возрастанию - сначала самые старые)
     print("Выход функции sort_by_date (сортировка по возрастанию):")
