@@ -1,5 +1,6 @@
-from masks import get_mask_card_number, get_mask_account
 from datetime import datetime  # Импортируем модуль для работы с датой и временем
+
+from masks import get_mask_account, get_mask_card_number
 
 
 def mask_account_card(info: str) -> str:
@@ -13,7 +14,7 @@ def mask_account_card(info: str) -> str:
     # Последний элемент — это всегда номер
     number = parts[-1]
 
-    # Все элементы кроме последнего — это тип ("Карта"" или "Счет")
+    # Все элементы кроме последнего — это тип ("Карта" или "Счет")
     card_or_account_type = " ".join(parts[:-1])
 
     # Определяем, карта это или счет, по длине номера, и применяем нужную маску
