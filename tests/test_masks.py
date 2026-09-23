@@ -4,6 +4,7 @@ from src.masks import get_mask_card_number, get_mask_account
 
 # 1. Тесты с использованием фикстур
 
+
 def test_mask_card_with_fixture(valid_card_number: str) -> None:
     """Проверяет маскирование номера карты, переданного через фикстуру."""
     assert get_mask_card_number(valid_card_number) == "7000 79** **** 6361"
@@ -27,13 +28,14 @@ def test_short_account_raises_error(short_account_number: str) -> None:
 
 # 2. Параметризация: валидные номера карт
 
+
 @pytest.mark.parametrize(
     "card_number, expected",
     [
         ("7000792289606361", "7000 79** **** 6361"),
         ("1234567890123456", "1234 56** **** 3456"),
-        ("0000000000000000", "0000 00** **** 0000")
-    ]
+        ("0000000000000000", "0000 00** **** 0000"),
+    ],
 )
 def test_valid_card_numbers(card_number: str, expected: str) -> None:
     """Проверяет корректность маскирования номера карты для различных валидных номеров."""
@@ -42,11 +44,7 @@ def test_valid_card_numbers(card_number: str, expected: str) -> None:
 
 @pytest.mark.parametrize(
     "account_number, expected",
-    [
-        ("12345678901234567890", "**7890"),
-        ("00000000000000000000", "**0000"),
-        ("99999999999999999999", "**9999")
-    ]
+    [("12345678901234567890", "**7890"), ("00000000000000000000", "**0000"), ("99999999999999999999", "**9999")],
 )
 def test_valid_account_numbers(account_number: str, expected: str) -> None:
     """Проверяет корректность маскирования счёта для различных валидных номеров."""
@@ -55,17 +53,18 @@ def test_valid_account_numbers(account_number: str, expected: str) -> None:
 
 # 3. Параметризация: невалидные входные данные
 
+
 @pytest.mark.parametrize(
     "invalid_input",
     [
-        "",                    # Пустая строка
-        "123456",              # Слишком короткий номер
-        "12345678901234567",   # 17 цифр (больше 16)
-        "1234abcd5678efgh",    # Буквы вместо цифр
-        "1234 5678 9012 3456", # Пробелы в номере
-        "1234-5678-9012-3456", # Дефисы в номере
-        " 123456789012345"     # Пробел в начале
-    ]
+        "",  # Пустая строка
+        "123456",  # Слишком короткий номер
+        "12345678901234567",  # 17 цифр (больше 16)
+        "1234abcd5678efgh",  # Буквы вместо цифр
+        "1234 5678 9012 3456",  # Пробелы в номере
+        "1234-5678-9012-3456",  # Дефисы в номере
+        " 123456789012345",  # Пробел в начале
+    ],
 )
 def test_invalid_card_numbers_raise_value_error(invalid_input: str) -> None:
     """Проверяет, что невалидные входные данные вызывают ValueError."""
@@ -76,12 +75,12 @@ def test_invalid_card_numbers_raise_value_error(invalid_input: str) -> None:
 @pytest.mark.parametrize(
     "invalid_input",
     [
-        "",                       # Пустая строка
-        "12345",                  # 5 цифр (короткий номер)
+        "",  # Пустая строка
+        "12345",  # 5 цифр (короткий номер)
         "123456789012345678901",  # 21 цифра (больше 20)
-        "1234567890123456789 ",   # Пробел в конце
-        "abcdefghij1234567890"    # Не все цифры
-    ]
+        "1234567890123456789 ",  # Пробел в конце
+        "abcdefghij1234567890",  # Не все цифры
+    ],
 )
 def test_invalid_account_numbers_raise_value_error(invalid_input: str) -> None:
     """Проверяет, что невалидные входные данные (в т.ч. короче 20) вызывают ValueError."""
@@ -90,6 +89,7 @@ def test_invalid_account_numbers_raise_value_error(invalid_input: str) -> None:
 
 
 # 4. Проверка структуры результата
+
 
 def test_result_format_structure(valid_card_number: str) -> None:
     """Проверяет, что результат состоит из 4 блоков по 4 символа."""

@@ -4,6 +4,7 @@ from src.widget import mask_account_card, get_date
 
 # 1. Тесты с использованием фикстур
 
+
 def test_mask_account_card_with_fixture_card(valid_card_string: str) -> None:
     """Проверяет маскирование карты, используя фикстуру."""
     result = mask_account_card(valid_card_string)
@@ -23,6 +24,7 @@ def test_get_date_with_fixture(valid_date_string: str) -> None:
 
 # 2. Параметризация: Корректные входные данные
 
+
 @pytest.mark.parametrize(
     "input_data, expected_result",
     [
@@ -33,7 +35,7 @@ def test_get_date_with_fixture(valid_date_string: str) -> None:
         # Счета (длина 20)
         ("Счет 40817810099910004312", "Счет **4312"),
         ("Bank Account 40817810099910004312", "Bank Account **4312"),
-    ]
+    ],
 )
 def test_mask_account_card_parametrized(input_data: str, expected_result: str) -> None:
     """
@@ -47,12 +49,11 @@ def test_mask_account_card_parametrized(input_data: str, expected_result: str) -
     "date_string, expected",
     [
         ("2024-03-11T02:26:18.671407", "11.03.2024"),  # С микросекундами
-        ("2023-12-31T23:59:59", "31.12.2023"),         # Без микросекунд
-        ("2000-01-01T00:00:00", "01.01.2000"),         # Начало века
-        ("2024-02-29T12:00:00", "29.02.2024"),         # Високосный год
-        ("2024-03-11", "11.03.2024")                   # Только дата без времени
-
-    ]
+        ("2023-12-31T23:59:59", "31.12.2023"),  # Без микросекунд
+        ("2000-01-01T00:00:00", "01.01.2000"),  # Начало века
+        ("2024-02-29T12:00:00", "29.02.2024"),  # Високосный год
+        ("2024-03-11", "11.03.2024"),  # Только дата без времени
+    ],
 )
 def test_get_date_valid_formats(date_string: str, expected: str) -> None:
     """Проверяет корректное преобразование различных валидных форматов ISO."""
@@ -61,15 +62,16 @@ def test_get_date_valid_formats(date_string: str, expected: str) -> None:
 
 # 3. Параметризация: Некорректные входные данные (Ошибки)
 
+
 @pytest.mark.parametrize(
     "invalid_input",
     [
-        "Карта 12345",             # Слишком короткий номер карты
-        "Счет 1234567890",         # Слишком короткий номер счета
-        "Visa 1234abcd5678efgh",   # Буквы вместо номера
-        "Просто текст без номера", # Нет номера в конце
-        ""                         # Пустая строка
-    ]
+        "Карта 12345",  # Слишком короткий номер карты
+        "Счет 1234567890",  # Слишком короткий номер счета
+        "Visa 1234abcd5678efgh",  # Буквы вместо номера
+        "Просто текст без номера",  # Нет номера в конце
+        "",  # Пустая строка
+    ],
 )
 def test_mask_account_card_invalid_data(invalid_input: str) -> None:
     """
@@ -85,13 +87,13 @@ def test_mask_account_card_invalid_data(invalid_input: str) -> None:
 @pytest.mark.parametrize(
     "invalid_input",
     [
-        "",                          # Пустая строка
-        "11.03.2024",                # Неправильный разделитель и порядок
-        "2024-13-01T00:00:00",       # Несуществующий месяц
-        "2024-02-30T00:00:00",       # Несуществующий день
-        "Нету даты",                 # Просто текст
-        "2024/03/11 02:26:18",       # Неправильные разделители
-    ]
+        "",  # Пустая строка
+        "11.03.2024",  # Неправильный разделитель и порядок
+        "2024-13-01T00:00:00",  # Несуществующий месяц
+        "2024-02-30T00:00:00",  # Несуществующий день
+        "Нету даты",  # Просто текст
+        "2024/03/11 02:26:18",  # Неправильные разделители
+    ],
 )
 def test_get_date_invalid_formats(invalid_input: str) -> None:
     """
@@ -99,4 +101,3 @@ def test_get_date_invalid_formats(invalid_input: str) -> None:
     """
     with pytest.raises(ValueError):
         get_date(invalid_input)
-

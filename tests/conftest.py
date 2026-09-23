@@ -2,6 +2,7 @@ import pytest
 
 # Фикстуры для get_mask_card_number
 
+
 @pytest.fixture
 def valid_card_number() -> str:
     """Фикстура: валидный 16-значный номер карты."""
@@ -15,6 +16,7 @@ def another_valid_card() -> str:
 
 
 # Фикстуры для get_mask_account
+
 
 @pytest.fixture
 def valid_account_number() -> str:
@@ -30,6 +32,7 @@ def short_account_number() -> str:
 
 # Фикстуры для mask_account_card
 
+
 @pytest.fixture
 def valid_card_string() -> str:
     """Строка с типом карты и номером."""
@@ -44,6 +47,7 @@ def valid_account_string() -> str:
 
 # Фикстуры для get_date
 
+
 @pytest.fixture
 def valid_date_string() -> str:
     """Фикстура: стандартная строка даты в формате ISO 8601 с микросекундами."""
@@ -51,6 +55,7 @@ def valid_date_string() -> str:
 
 
 # Фикстуры для filter_by_state
+
 
 @pytest.fixture
 def sample_data() -> list:
@@ -87,4 +92,38 @@ def data_with_no_matches() -> list:
         {"id": 1, "state": "CANCELED"},
         {"id": 2, "state": "PENDING"},
         {"id": 3, "state": "FAILED"},
+    ]
+
+
+# Фикстуры для sort_by_date
+
+
+@pytest.fixture
+def unsorted_data() -> list:
+    """Фикстура: исходный неотсортированный список словарей."""
+    return [
+        {"id": 41428829, "state": "EXECUTED", "date": "2019-07-03T18:35:29.512364"},
+        {"id": 939719570, "state": "EXECUTED", "date": "2018-06-30T02:08:58.425572"},
+        {"id": 594226727, "state": "CANCELED", "date": "2018-09-12T21:27:25.241689"},
+        {"id": 615064591, "state": "CANCELED", "date": "2018-10-14T08:21:33.419441"},
+    ]
+
+
+@pytest.fixture
+def data_with_same_dates() -> list:
+    """Фикстура: данные с одинаковыми датами."""
+    return [
+        {"id": 1, "date": "2020-01-01T00:00:00"},
+        {"id": 2, "date": "2020-01-01T00:00:00"},
+        {"id": 3, "date": "2020-01-01T00:00:00"},
+    ]
+
+
+@pytest.fixture
+def data_with_missing_dates() -> list:
+    """Фикстура: данные, где у некоторых словарей отсутствует ключ 'date'."""
+    return [
+        {"id": 1, "date": "2020-01-01T00:00:00"},
+        {"id": 2},  # нет ключа date
+        {"id": 3, "date": "2019-01-01T00:00:00"},
     ]
