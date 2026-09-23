@@ -2,7 +2,7 @@ import pytest
 
 from src.masks import get_mask_card_number, get_mask_account
 
-# 1. Тест с использованием фикстур
+# 1. Тесты с использованием фикстур
 
 def test_mask_card_with_fixture(valid_card_number: str) -> None:
     """Проверяет маскирование номера карты, переданного через фикстуру."""
