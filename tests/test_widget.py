@@ -82,8 +82,8 @@ def test_mask_account_card_invalid_data(invalid_input: str) -> None:
         mask_account_card(invalid_input)
 
 
-# 3. Параметризация: невалидные входные данные
-# ──────────────────────────────────────────────
+# 4. Параметризация: невалидные входные данные
+
 @pytest.mark.parametrize(
     "invalid_input",
     [

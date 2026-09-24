@@ -44,7 +44,9 @@ def test_valid_card_numbers(card_number: str, expected: str) -> None:
 
 @pytest.mark.parametrize(
     "account_number, expected",
-    [("12345678901234567890", "**7890"), ("00000000000000000000", "**0000"), ("99999999999999999999", "**9999")],
+    [("12345678901234567890", "**7890"),
+     ("00000000000000000000", "**0000"),
+     ("99999999999999999999", "**9999")],
 )
 def test_valid_account_numbers(account_number: str, expected: str) -> None:
     """Проверяет корректность маскирования счёта для различных валидных номеров."""
