@@ -1,6 +1,6 @@
 from datetime import datetime  # Импортируем модуль для работы с датой и временем
 
-from masks import get_mask_account, get_mask_card_number
+from src.masks import get_mask_account, get_mask_card_number
 
 
 def mask_account_card(info: str) -> str:
@@ -10,6 +10,10 @@ def mask_account_card(info: str) -> str:
     """
     # Разделяем входную строку на слова
     parts = info.split()
+
+    # Проверяем, что строка не пустая и содержит хотя бы 2 элемента
+    if len(parts) < 2:
+        raise ValueError("Входная строка должна содержать тип и номер карты/счета")
 
     # Последний элемент — это всегда номер
     number = parts[-1]
