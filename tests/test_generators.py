@@ -2,7 +2,6 @@ import pytest
 
 from src.generators import filter_by_currency, transaction_descriptions, card_number_generator
 
-
 # ТЕСТЫ ДЛЯ ФУНКЦИИ filter_by_currency
 
 
@@ -51,7 +50,7 @@ def test_filter_by_currency_empty_list(empty_transactions: list) -> None:
         ("RUB", [873106923]),
         ("EUR", [414288290]),
         ("CNY", []),  # Валюта, которой нет в данных
-    ]
+    ],
 )
 def test_filter_by_currency_parametrized(sample_transactions: list, currency: str, expected_ids: list) -> None:
     """Параметризованный тест: проверяет корректность ID отфильтрованных транзакций."""
@@ -89,12 +88,7 @@ def test_transaction_descriptions_basic(sample_transactions: list) -> None:
     # Преобразуем генератор в список для удобной проверки
     result = list(gen)
 
-    assert result == [
-        "Перевод организации",
-        "Перевод со счета на счет",
-        "Вклад",
-        "Оплата услуг"
-    ]
+    assert result == ["Перевод организации", "Перевод со счета на счет", "Вклад", "Оплата услуг"]
 
 
 # 2. Параметризация: различные входные списки
@@ -108,11 +102,8 @@ def test_transaction_descriptions_basic(sample_transactions: list) -> None:
         # Пустой список
         ([], []),
         # Несколько элементов с одинаковыми описаниями
-        (
-                [{"description": "А"}, {"description": "А"}, {"description": "Б"}],
-                ["А", "А", "Б"]
-        ),
-    ]
+        ([{"description": "А"}, {"description": "А"}, {"description": "Б"}], ["А", "А", "Б"]),
+    ],
 )
 def test_transaction_descriptions_parametrized(input_data: list, expected_descriptions: list) -> None:
     """Параметризованный тест: проверяет работу с разными наборами данных."""
@@ -138,17 +129,17 @@ def test_transaction_descriptions_missing_key(transactions_missing_description: 
 
 
 def test_transaction_descriptions_next_calls(sample_transactions: list) -> None:
-     """Проверяет последовательный вызов next() на генераторе."""
-     gen = transaction_descriptions(sample_transactions)
+    """Проверяет последовательный вызов next() на генераторе."""
+    gen = transaction_descriptions(sample_transactions)
 
-     assert next(gen) == "Перевод организации"
-     assert next(gen) == "Перевод со счета на счет"
-     assert next(gen) == "Вклад"
-     assert next(gen) == "Оплата услуг"
+    assert next(gen) == "Перевод организации"
+    assert next(gen) == "Перевод со счета на счет"
+    assert next(gen) == "Вклад"
+    assert next(gen) == "Оплата услуг"
 
-     # После исчерпания генератора должен вызываться StopIteration
-     with pytest.raises(StopIteration):
-         next(gen)
+    # После исчерпания генератора должен вызываться StopIteration
+    with pytest.raises(StopIteration):
+        next(gen)
 
 
 # ТЕСТЫ ДЛЯ ФУНКЦИИ card_number_generator
@@ -167,7 +158,7 @@ def test_card_number_generator_basic() -> None:
         "0000 0000 0000 0002",
         "0000 0000 0000 0003",
         "0000 0000 0000 0004",
-        "0000 0000 0000 0005"
+        "0000 0000 0000 0005",
     ]
 
 

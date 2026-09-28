@@ -29,7 +29,7 @@ def card_number_generator(start: int, stop: int) -> Iterator[str]:
         num_str = str(i)
 
         # Добавляем нужное количество нулей слева, чтобы получить ровно 16 цифр
-        num_str = '0' * (16 - len(num_str)) + num_str
+        num_str = "0" * (16 - len(num_str)) + num_str
 
         # Разбиваем на блоки по 4 цифры
         formatted_card = f"{num_str[:4]} {num_str[4:8]} {num_str[8:12]} {num_str[12:]}"
