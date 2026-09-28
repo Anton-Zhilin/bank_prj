@@ -199,3 +199,18 @@ def malformed_transactions() -> list:
             }
         }
     ]
+
+
+# Фикстуры для transaction_descriptions
+
+
+@pytest.fixture
+def transactions_missing_description() -> list:
+    """Фикстура: транзакции, где у одной из них отсутствует ключ 'description'."""
+    return [
+        {"id": 1, "description": "Перевод организации"},
+        {"id": 2, "state": "EXECUTED"},  # Отсутствует description
+        {"id": 3, "description": "Оплата услуг"}
+    ]
+
+

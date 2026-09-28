@@ -16,3 +16,5 @@ def transaction_descriptions(transactions: List[Dict[str, Any]]) -> Iterator[str
     """Принимает список словарей с транзакциями и возвращает описание каждой операции по очереди."""
     for transaction in transactions:
         yield transaction.get("description", "")
+
+
