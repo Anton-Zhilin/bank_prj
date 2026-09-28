@@ -10,3 +10,9 @@ def filter_by_currency(transactions: List[Dict[str, Any]], currency: str) -> Ite
 
         if transaction_currency == currency:
             yield transaction
+
+
+def transaction_descriptions(transactions: List[Dict[str, Any]]) -> Iterator[str]:
+    """Принимает список словарей с транзакциями и возвращает описание каждой операции по очереди."""
+    for transaction in transactions:
+        yield transaction.get("description", "")
