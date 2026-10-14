@@ -1,6 +1,6 @@
 import pytest
 
-from src.generators import filter_by_currency, transaction_descriptions, card_number_generator
+from src.generators import card_number_generator, filter_by_currency, transaction_descriptions
 
 # ТЕСТЫ ДЛЯ ФУНКЦИИ filter_by_currency
 
@@ -172,7 +172,7 @@ def test_card_number_generator_basic() -> None:
         (9, 11, "0000 0000 0000 0009", "0000 0000 0000 0011"),  # Переход через десяток
         (99, 101, "0000 0000 0000 0099", "0000 0000 0000 0101"),  # Переход через сотню
         (9999999999999998, 9999999999999999, "9999 9999 9999 9998", "9999 9999 9999 9999"),  # Граничные значения
-    ]
+    ],
 )
 def test_card_number_generator_parametrized(start: int, stop: int, expected_first: str, expected_last: str) -> None:
     """Параметризованный тест: проверяет корректность формата на разных диапазонах."""
@@ -193,7 +193,7 @@ def test_card_number_generator_parametrized(start: int, stop: int, expected_firs
         (0, 10),  # start < 1
         (-5, 10),  # отрицательный start
         (1, 10000000000000000),  # stop > 9999999999999999
-    ]
+    ],
 )
 def test_card_number_generator_invalid_range(start: int, stop: int) -> None:
     """Проверяет, что функция выбрасывает ValueError при некорректном диапазоне."""
