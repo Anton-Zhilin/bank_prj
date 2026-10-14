@@ -1,9 +1,9 @@
 import os
-import pytest
 from pathlib import Path
 
-from src.decorators import log
+import pytest
 
+from src.decorators import log
 
 # ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ДЛЯ ТЕСТИРОВАНИЯ
 
@@ -95,6 +95,7 @@ def test_log_error_with_kwargs(capsys: pytest.CaptureFixture) -> None:
 def test_log_error_preserves_exception(capsys: pytest.CaptureFixture) -> None:
     """Проверяет, что декоратор не поглощает исключение, а пробрасывает его дальше."""
     with pytest.raises(TypeError):
+
         @log()
         def raise_type_error() -> None:
             raise TypeError("Неправильный тип")
@@ -103,6 +104,7 @@ def test_log_error_preserves_exception(capsys: pytest.CaptureFixture) -> None:
 
     captured = capsys.readouterr()
     assert "raise_type_error error: TypeError" in captured.out
+
 
 # 3. ТЕСТЫ ЗАПИСИ В ФАЙЛ
 
@@ -120,7 +122,7 @@ def test_log_success_to_file(tmp_path: Path) -> None:
     assert result == 10
     assert log_file.exists()
 
-    content = log_file.read_text(encoding='utf-8')
+    content = log_file.read_text(encoding="utf-8")
     assert "file_func ok" in content
 
 
@@ -137,7 +139,6 @@ def test_log_error_to_file(tmp_path: Path) -> None:
 
     assert log_file.exists()
 
-    content = log_file.read_text(encoding='utf-8')
+    content = log_file.read_text(encoding="utf-8")
     assert "error_func error: RuntimeError" in content
     assert "Inputs: (42,), {}" in content
-
