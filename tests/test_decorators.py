@@ -1,5 +1,6 @@
 import os
 import pytest
+from pathlib import Path
 
 from src.decorators import log
 
@@ -103,11 +104,10 @@ def test_log_error_preserves_exception(capsys: pytest.CaptureFixture) -> None:
     captured = capsys.readouterr()
     assert "raise_type_error error: TypeError" in captured.out
 
-
 # 3. ТЕСТЫ ЗАПИСИ В ФАЙЛ
 
 
-def test_log_success_to_file(tmp_path: pytest.TempPathFactory) -> None:
+def test_log_success_to_file(tmp_path: Path) -> None:
     """Проверяет запись успешного выполнения в файл."""
     log_file = tmp_path / "test_success.log"
 
@@ -124,7 +124,7 @@ def test_log_success_to_file(tmp_path: pytest.TempPathFactory) -> None:
     assert "file_func ok" in content
 
 
-def test_log_error_to_file(tmp_path: pytest.TempPathFactory) -> None:
+def test_log_error_to_file(tmp_path: Path) -> None:
     """Проверяет запись ошибки в файл."""
     log_file = tmp_path / "test_error.log"
 
