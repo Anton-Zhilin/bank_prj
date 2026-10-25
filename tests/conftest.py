@@ -195,3 +195,38 @@ def transactions_missing_description() -> list:
         {"id": 2, "state": "EXECUTED"},  # Отсутствует description
         {"id": 3, "description": "Оплата услуг"},
     ]
+
+
+# Фикстуры для get_amount_in_rub
+
+@pytest.fixture
+def rub_transaction() -> dict:
+    return {
+        "id": 1,
+        "operationAmount": {
+            "amount": "1500.50 ",
+            "currency": {"code": "RUB "}
+        }
+    }
+
+
+@pytest.fixture
+def usd_transaction() -> dict:
+    return {
+        "id": 2,
+        "operationAmount": {
+            "amount": "100.0 ",
+            "currency": {"code": "USD "}
+        }
+    }
+
+
+@pytest.fixture
+def eur_transaction() -> dict:
+    return {
+        "id": 3,
+        "operationAmount": {
+            "amount": "50.0",
+            "currency": {"code": "EUR"}
+        }
+    }
