@@ -199,13 +199,14 @@ def transactions_missing_description() -> list:
 
 # Фикстуры для get_amount_in_rub
 
+
 @pytest.fixture
 def rub_transaction() -> dict:
     return {
         "id": 1,
         "operationAmount": {
-            "amount": "1500.50 ",
-            "currency": {"code": "RUB "}
+            "amount": "1500.50",
+            "currency": {"code": "RUB"}
         }
     }
 
@@ -215,18 +216,7 @@ def usd_transaction() -> dict:
     return {
         "id": 2,
         "operationAmount": {
-            "amount": "100.0 ",
-            "currency": {"code": "USD "}
-        }
-    }
-
-
-@pytest.fixture
-def eur_transaction() -> dict:
-    return {
-        "id": 3,
-        "operationAmount": {
-            "amount": "50.0",
-            "currency": {"code": "EUR"}
+            "amount": "100.0",
+            "currency": {"code": "USD"}
         }
     }
