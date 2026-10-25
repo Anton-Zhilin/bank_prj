@@ -1,6 +1,7 @@
 import os
-import requests
 from typing import Any, Dict
+
+import requests
 from dotenv import load_dotenv
 
 # Загружаем переменные из .env при старте модуля
@@ -51,6 +52,3 @@ def get_amount_in_rub(transaction: Dict[str, Any]) -> float:
             raise ValueError(f"API вернул некорректный ответ: {data}")
 
     raise ValueError(f"Неподдерживаемая валюта для конвертации: {currency_code}")
-
-
-

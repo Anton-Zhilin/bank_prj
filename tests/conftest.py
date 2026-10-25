@@ -202,21 +202,9 @@ def transactions_missing_description() -> list:
 
 @pytest.fixture
 def rub_transaction() -> dict:
-    return {
-        "id": 1,
-        "operationAmount": {
-            "amount": "1500.50",
-            "currency": {"code": "RUB"}
-        }
-    }
+    return {"id": 1, "operationAmount": {"amount": "1500.50", "currency": {"code": "RUB"}}}
 
 
 @pytest.fixture
 def usd_transaction() -> dict:
-    return {
-        "id": 2,
-        "operationAmount": {
-            "amount": "100.0",
-            "currency": {"code": "USD"}
-        }
-    }
+    return {"id": 2, "operationAmount": {"amount": "100.0", "currency": {"code": "USD"}}}

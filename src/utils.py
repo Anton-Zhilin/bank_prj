@@ -7,7 +7,7 @@ def load_operations(filepath: str) -> List[Dict[str, Any]]:
     Загружает данные о финансовых транзакциях из JSON-файла.
     """
     try:
-        with open(filepath, 'r', encoding='utf-8') as file:
+        with open(filepath, "r", encoding="utf-8") as file:
             data = json.load(file)
 
             # Проверяем, что загруженные данные являются списком
@@ -21,4 +21,3 @@ def load_operations(filepath: str) -> List[Dict[str, Any]]:
         # FileNotFoundError: файл не найден
         # JSONDecodeError: файл пустой или содержит невалидный JSON
         return []
-

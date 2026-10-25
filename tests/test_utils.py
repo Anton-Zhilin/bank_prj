@@ -1,18 +1,16 @@
 import json
+from unittest.mock import mock_open, patch
+
 import pytest
-from unittest.mock import patch, mock_open
 
 from src.utils import load_operations
-
 
 # 1. Тест успешной загрузки валидного списка
 
 
 def test_load_operations_success() -> None:
     """Проверяет успешную загрузку корректного JSON-списка."""
-    mock_json_data = json.dumps([
-        {"id": 1, "state": "EXECUTED", "description": "Тестовая операция"}
-    ])
+    mock_json_data = json.dumps([{"id": 1, "state": "EXECUTED", "description": "Тестовая операция"}])
 
     with patch("builtins.open", mock_open(read_data=mock_json_data)):
         result = load_operations("fake_path.json")
@@ -43,7 +41,7 @@ def test_load_operations_file_not_found() -> None:
         ("", "empty_file"),
         ("   ", "whitespace_only"),
         ("{ невалидный json }", "invalid_json_syntax"),
-    ]
+    ],
 )
 def test_load_operations_invalid_or_empty_json(mock_data: str, test_name: str) -> None:
     """Проверяет обработку пустых файлов или файлов с синтаксическими ошибками JSON."""
@@ -60,14 +58,12 @@ def test_load_operations_invalid_or_empty_json(mock_data: str, test_name: str) -
     [
         ('{"id": 1, "state": "EXECUTED"}', "dict"),
         ('"просто строка"', "string"),
-        ('12345', "number"),
-        ('null', "null"),
-    ]
+        ("12345", "number"),
+        ("null", "null"),
+    ],
 )
 def test_load_operations_not_a_list(mock_data: str, expected_type: str) -> None:
     """Проверяет, что функция возвращает пустой список, если корневой элемент JSON — не список."""
     with patch("builtins.open", mock_open(read_data=mock_data)):
         result = load_operations("not_a_list.json")
         assert result == []
-
-
