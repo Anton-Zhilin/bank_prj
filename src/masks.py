@@ -1,7 +1,6 @@
 import logging
 import os
 
-
 # НАСТРОЙКА ЛОГГЕРА ДЛЯ МОДУЛЯ masks
 
 
@@ -23,10 +22,7 @@ file_handler = logging.FileHandler(LOG_FILE, mode="w", encoding="utf-8")
 file_handler.setLevel(logging.DEBUG)
 
 # Создаём formatter: время | модуль | уровень | сообщение
-file_formatter = logging.Formatter(
-    "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-    datefmt="%Y-%m-%d %H:%M:%S"
-)
+file_formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s", datefmt="%Y-%m-%d %H:%M:%S")
 
 # Устанавливаем formatter для handler
 file_handler.setFormatter(file_formatter)
@@ -44,8 +40,7 @@ def get_mask_card_number(card_number: str) -> str:
     if len(card_number) != 16 or not card_number.isdigit():
         # Логируем ошибку с уровнем ERROR
         logger.error(
-            f"Неверный номер карты: '{card_number}'. "
-            f"Ожидается 16 цифр, получено {len(card_number)} символов."
+            f"Неверный номер карты: '{card_number}'. " f"Ожидается 16 цифр, получено {len(card_number)} символов."
         )
         raise ValueError("Номер карты должен содержать 16 цифр")
 

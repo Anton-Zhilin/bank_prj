@@ -3,7 +3,6 @@ import logging
 import os
 from typing import Any, Dict, List
 
-
 # НАСТРОЙКА ЛОГГЕРА ДЛЯ МОДУЛЯ utils
 
 
@@ -25,10 +24,7 @@ file_handler = logging.FileHandler(LOG_FILE, mode="w", encoding="utf-8")
 file_handler.setLevel(logging.DEBUG)
 
 # Создаём formatter: время | модуль | уровень | сообщение
-file_formatter = logging.Formatter(
-    "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-    datefmt="%Y-%m-%d %H:%M:%S"
-)
+file_formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s", datefmt="%Y-%m-%d %H:%M:%S")
 
 # Устанавливаем formatter для handler
 file_handler.setFormatter(file_formatter)
@@ -59,15 +55,11 @@ def load_operations(filepath: str) -> List[Dict[str, Any]]:
 
             # Проверяем, что загруженные данные являются списком
             if isinstance(data, list):
-                logger.info(
-                    f"Файл успешно загружен. Получено операций: {len(data)}"
-                )
+                logger.info(f"Файл успешно загружен. Получено операций: {len(data)}")
                 return data
 
             # Если данные есть, но это не список (например, словарь или строка)
-            logger.error(
-                f"Ожидался список операций, но получен тип: {type(data).__name__}"
-            )
+            logger.error(f"Ожидался список операций, но получен тип: {type(data).__name__}")
             return []
 
     except FileNotFoundError:
@@ -98,4 +90,3 @@ if __name__ == "__main__":
     print("2. Пробуем загрузить несуществующий файл:")
     result = load_operations("non_existent_file.json")
     print(f"   Результат: {result}\n")
-
