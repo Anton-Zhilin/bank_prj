@@ -46,7 +46,7 @@ def test_load_operations_file_not_found() -> None:
 def test_load_operations_invalid_or_empty_json(mock_data: str, test_name: str) -> None:
     """Проверяет обработку пустых файлов или файлов с синтаксическими ошибками JSON."""
     with patch("builtins.open", mock_open(read_data=mock_data)):
-        result = load_operations("invalid.json")
+        result = load_operations("nonvalid.json")
         assert result == []
 
 
