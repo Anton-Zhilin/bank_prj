@@ -1,7 +1,7 @@
 import csv
 import logging
 import os
-from typing import Any, Dict, List, cast
+from typing import Any, Dict, List, Hashable
 
 import pandas as pd
 
@@ -35,7 +35,7 @@ file_handler.setFormatter(file_formatter)
 logger.addHandler(file_handler)
 
 
-def load_operations_csv(filepath: str) -> List[Dict[str, Any]]:
+def load_operations_csv(filepath: str) -> List[Dict[Hashable, Any]]:
     """Загружает финансовые операции из CSV-файла"""
     logger.info(f"Попытка загрузить операции из CSV: {filepath}")
     try:
@@ -54,7 +54,7 @@ def load_operations_csv(filepath: str) -> List[Dict[str, Any]]:
         return []
 
 
-def load_operations_excel(filepath: str) -> List[Dict[str, Any]]:
+def load_operations_excel(filepath: str) -> List[Dict[Hashable, Any]]:
     """Загружает финансовые операции из Excel-файла (.xlsx)"""
     logger.info(f"Попытка загрузить операции из Excel: {filepath}")
     try:
