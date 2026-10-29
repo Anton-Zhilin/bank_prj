@@ -8,7 +8,9 @@ authors = [
 requires-python = "^3.14"
 dependencies = [
     "requests (>=2.34.2,<3.0.0)",
-    "python-dotenv (>=1.2.4,<2.0.0)"
+    "python-dotenv (>=1.2.4,<2.0.0)",
+    "pandas (>=3.1.0,<4.0.0)",
+    "openpyxl (>=3.1.5,<4.0.0)"
 ]
 
 [build-system]
@@ -24,7 +26,8 @@ lint = [
 ]
 dev = [
     "pytest (>=9.1.1,<10.0.0)",
-    "pytest-cov (>=7.1.0,<8.0.0)"
+    "pytest-cov (>=7.1.0,<8.0.0)",
+    "pandas-stubs (>=3.0.5.260914,<4.0.0.0)"
 ]
 
 [tool.mypy]
