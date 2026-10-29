@@ -1,10 +1,9 @@
 import csv
 import logging
 import os
+from typing import Any, Dict, List, cast
+
 import pandas as pd
-
-from typing import Any, Dict, List
-
 
 # НАСТРОЙКА ЛОГГЕРА ДЛЯ МОДУЛЯ file_readers
 
@@ -40,7 +39,7 @@ def load_operations_csv(filepath: str) -> List[Dict[str, Any]]:
     """Загружает финансовые операции из CSV-файла"""
     logger.info(f"Попытка загрузить операции из CSV: {filepath}")
     try:
-        with open(filepath, 'r', encoding='utf-8') as file:
+        with open(filepath, "r", encoding="utf-8") as file:
             reader = csv.DictReader(file)
             data = list(reader)
 
@@ -66,7 +65,7 @@ def load_operations_excel(filepath: str) -> List[Dict[str, Any]]:
         df = df.where(pd.notnull(df), None)
 
         # Конвертируем DataFrame в список словарей
-        data = df.to_dict(orient='records')
+        data = df.to_dict(orient="records")
 
         logger.info(f"Успешно загружено {len(data)} операций из Excel.")
         return data
@@ -77,4 +76,3 @@ def load_operations_excel(filepath: str) -> List[Dict[str, Any]]:
     except Exception as e:
         logger.error(f"Ошибка при чтении Excel файла {filepath}: {e}")
         return []
-

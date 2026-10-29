@@ -1,10 +1,11 @@
 import csv
-import pytest
+from pathlib import Path
+from unittest.mock import mock_open, patch
+
 import pandas as pd
-from unittest.mock import patch, mock_open
+import pytest
 
 from src.file_readers import load_operations_csv, load_operations_excel
-
 
 # ТЕСТЫ ДЛЯ CSV
 
@@ -33,7 +34,7 @@ def test_load_operations_csv_file_not_found() -> None:
         assert result == []
 
 
-def test_load_operations_csv_invalid_file(tmp_path) -> None:
+def test_load_operations_csv_invalid_file(tmp_path: Path) -> None:
     """Проверяет обработку файла с неправильным форматом."""
     # Создаём JSON-файл вместо CSV
     test_file = tmp_path / "fake.csv"
@@ -47,7 +48,7 @@ def test_load_operations_csv_invalid_file(tmp_path) -> None:
 # ТЕСТЫ ДЛЯ EXCEL
 
 
-def test_load_operations_excel_success(tmp_path) -> None:
+def test_load_operations_excel_success(tmp_path: Path) -> None:
     """
     Проверяет успешную загрузку данных из Excel.
     Создаём реальный временный Excel-файл и читаем его.
@@ -57,11 +58,7 @@ def test_load_operations_excel_success(tmp_path) -> None:
     test_file = tmp_path / "test_transactions.xlsx"
 
     # Создаём DataFrame и сохраняем в Excel
-    test_data = {
-        "id": [1, 2],
-        "state": ["EXECUTED", "CANCELED"],
-        "amount": [100.50, 200.00]
-    }
+    test_data = {"id": [1, 2], "state": ["EXECUTED", "CANCELED"], "amount": [100.50, 200.00]}
     df = pd.DataFrame(test_data)
     df.to_excel(test_file, index=False)
 
@@ -82,7 +79,7 @@ def test_load_operations_excel_file_not_found() -> None:
     assert result == []
 
 
-def test_load_operations_excel_invalid_file(tmp_path) -> None:
+def test_load_operations_excel_invalid_file(tmp_path: Path) -> None:
     """Проверяет обработку файла с неправильным форматом."""
     # Создаём текстовый файл вместо Excel
     test_file = tmp_path / "fake.xlsx"
@@ -91,5 +88,3 @@ def test_load_operations_excel_invalid_file(tmp_path) -> None:
     # Функция должна вернуть пустой список при ошибке чтения
     result = load_operations_excel(str(test_file))
     assert result == []
-
-
