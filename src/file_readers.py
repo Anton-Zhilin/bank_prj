@@ -35,12 +35,13 @@ file_handler.setFormatter(file_formatter)
 logger.addHandler(file_handler)
 
 
-def load_operations_csv(filepath: str) -> List[Dict[Hashable, Any]]:
+def load_operations_csv(filepath: str) -> List[Dict[str, Any]]:
     """Загружает финансовые операции из CSV-файла"""
     logger.info(f"Попытка загрузить операции из CSV: {filepath}")
     try:
-        with open(filepath, "r", encoding="utf-8") as file:
-            reader = csv.DictReader(file)
+        with open(filepath, 'r', encoding='utf-8') as file:
+            # Указываем delimiter=';' для правильного парсинга
+            reader = csv.DictReader(file, delimiter=';')
             data = list(reader)
 
         logger.info(f"Успешно загружено {len(data)} операций из CSV.")
