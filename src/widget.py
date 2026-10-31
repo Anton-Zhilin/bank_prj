@@ -45,25 +45,3 @@ def get_date(date_string: str) -> str:
     # %d - день, %m - месяц, %Y - год (4 цифры)
     return date_obj.strftime("%d.%m.%Y")
 
-
-# Блок для проверки работы функций
-if __name__ == "__main__":
-    print("--- Проверка mask_account_card ---")
-    test_data_cards = [
-        "Maestro 1596837868705199",
-        "Счет 64686473678894779589",
-        "MasterCard 7158300734726758",
-        "Счет 35383033474447895560",
-        "Visa Classic 6831982476737658",
-        "Visa Platinum 8990922113665229",
-        "Visa Gold 5999414228426353",
-        "Счет 73654108430135874305",
-    ]
-
-    for data in test_data_cards:
-        print(f"{data} -> {mask_account_card(data)}")
-
-    print("\n--- Проверка get_date ---")
-    test_date = "2024-03-11T02:26:18.671407"
-    print(f"Входная строка: {test_date}")
-    print(f"Результат:      {get_date(test_date)}")

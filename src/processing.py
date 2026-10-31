@@ -1,4 +1,5 @@
 import re
+from collections import Counter
 from typing import Any, Dict, List
 
 
@@ -33,37 +34,27 @@ def process_bank_search(data: List[Dict[str, Any]], search: str) -> List[Dict[st
     return result
 
 
-# Блок проверки и примеров использования
+def process_bank_operations(data: List[Dict[str, Any]], categories: List[str]) -> Dict[str, int]:
+    """Подсчитывает количество банковских операций в каждой категории."""
+    # Создаем множество категорий для быстрого поиска (с удалением пробелов)
+    categories_set = {cat.strip() for cat in categories}
 
-if __name__ == "__main__":
+    # Извлекаем описания всех транзакций, очищая от пробелов
+    descriptions = []
+    for transaction in data:
+        description = transaction.get("description", "")
 
-    # Входные данные
-    transactions = [
-        {"id": 41428829, "state": "EXECUTED", "date": "2019-07-03T18:35:29.512364"},
-        {"id": 939719570, "state": "EXECUTED", "date": "2018-06-30T02:08:58.425572"},
-        {"id": 594226727, "state": "CANCELED", "date": "2018-09-12T21:27:25.241689"},
-        {"id": 615064591, "state": "CANCELED", "date": "2018-10-14T08:21:33.419441"},
-    ]
+        # Проверяем, что description является строкой
+        if isinstance(description, str):
+            # Очищаем от пробелов
+            cleaned_description = description.strip()
 
-    # Вспомогательная функция для красивого вывода
-    def print_list_pretty(data_to_print: List[Dict[str, Any]]) -> None:
-        print("[")
-        for item in data_to_print:
-            print(f"  {item},")
-        print("]")
+            # Добавляем только если категория есть в списке
+            if cleaned_description in categories_set:
+                descriptions.append(cleaned_description)
 
-    # Проверка 1: Фильтрация по умолчанию ('EXECUTED')
-    print("Выход функции filter_by_state (по умолчанию 'EXECUTED'):")
-    print_list_pretty(filter_by_state(transactions))
+    # Используем Counter для подсчета количества каждой категории
+    counter = Counter(descriptions)
 
-    # Проверка 2: Фильтрация если вторым значением передано 'CANCELED'
-    print("Выход функции filter_by_state если вторым аргументом передано 'CANCELED':")
-    print_list_pretty(filter_by_state(transactions, "CANCELED"))
-
-    # Проверка 3: Сортировка по дате (по убыванию - сначала самые новые)
-    print("Выход функции sort_by_date (сортировка по убыванию):")
-    print_list_pretty(sort_by_date(transactions))
-
-    # Проверка 4: Сортировка по дате (по возрастанию - сначала самые старые)
-    print("Выход функции sort_by_date (сортировка по возрастанию):")
-    print_list_pretty(sort_by_date(transactions, reverse=False))
+    # Преобразуем Counter в обычный словарь
+    return dict(counter)

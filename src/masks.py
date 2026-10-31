@@ -75,35 +75,3 @@ def get_mask_account(account_number: str) -> str:
 
     return result
 
-
-# ПРОВЕРОЧНЫЙ БЛОК
-
-
-if __name__ == "__main__":
-    print("Тестирование логирования модуля masks...\n")
-
-    # Успешный случай — карта
-    print("1. Маскируем номер карты:")
-    card = get_mask_card_number("7000792289606361")
-    print(f"   Результат: {card}\n")
-
-    # Успешный случай — счёт
-    print("2. Маскируем номер счета:")
-    account = get_mask_account("73654108430135874305")
-    print(f"   Результат: {account}\n")
-
-    # Ошибочный случай — неверный номер карты
-    print("3. Пробуем замаскировать неверный номер карты:")
-    try:
-        get_mask_card_number("12345")
-    except ValueError as e:
-        print(f"   Ошибка: {e}\n")
-
-    # Ошибочный случай — неверный номер счёта
-    print("4. Пробуем замаскировать неверный номер счета:")
-    try:
-        get_mask_account("abc")
-    except ValueError as e:
-        print(f"   Ошибка: {e}\n")
-
-    print(f"Логи записаны в файл: {LOG_FILE}")

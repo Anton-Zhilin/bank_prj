@@ -33,20 +33,8 @@ file_handler.setFormatter(file_formatter)
 logger.addHandler(file_handler)
 
 
-# ФУНКЦИИ МОДУЛЯ
-
-
 def load_operations(filepath: str) -> List[Dict[str, Any]]:
-    """
-    Загружает данные о финансовых транзакциях из JSON-файла.
-
-    Args:
-        filepath: Путь к JSON-файлу.
-
-    Returns:
-        Список словарей с данными транзакций.
-        Возвращает пустой список, если файл не найден, пуст или содержит не список.
-    """
+    """Загружает данные о финансовых транзакциях из JSON-файла."""
     logger.info(f"Попытка загрузить операции из файла: {filepath}")
 
     try:
@@ -73,20 +61,4 @@ def load_operations(filepath: str) -> List[Dict[str, Any]]:
         return []
 
 
-# ПРОВЕРОЧНЫЙ БЛОК
 
-
-if __name__ == "__main__":
-    print("Тестирование логирования модуля utils...\n")
-
-    # Определяем путь к файлу operations.json в папке data
-    data_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data")
-    operations_file = os.path.join(data_dir, "operations.json")
-
-    print(f"1. Загружаем файл: {operations_file}")
-    operations = load_operations(operations_file)
-    print(f"   Загружено операций: {len(operations)}\n")
-
-    print("2. Пробуем загрузить несуществующий файл:")
-    result = load_operations("non_existent_file.json")
-    print(f"   Результат: {result}\n")
