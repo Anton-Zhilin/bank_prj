@@ -36,22 +36,19 @@ def process_bank_search(data: List[Dict[str, Any]], search: str) -> List[Dict[st
 
 def process_bank_operations(data: List[Dict[str, Any]], categories: List[str]) -> Dict[str, int]:
     """Подсчитывает количество банковских операций в каждой категории."""
-    # Создаем множество категорий для быстрого поиска (с удалением пробелов)
-    categories_set = {cat.strip() for cat in categories}
+    # Создаем множество категорий для быстрого поиска
+    categories_set = set(categories)
 
-    # Извлекаем описания всех транзакций, очищая от пробелов
+    # Извлекаем описания всех транзакций
     descriptions = []
     for transaction in data:
         description = transaction.get("description", "")
 
         # Проверяем, что description является строкой
         if isinstance(description, str):
-            # Очищаем от пробелов
-            cleaned_description = description.strip()
-
             # Добавляем только если категория есть в списке
-            if cleaned_description in categories_set:
-                descriptions.append(cleaned_description)
+            if description in categories_set:
+                descriptions.append(description)
 
     # Используем Counter для подсчета количества каждой категории
     counter = Counter(descriptions)
