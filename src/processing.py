@@ -16,7 +16,7 @@ def sort_by_date(data: List[Dict[str, Any]], reverse: bool = True) -> List[Dict[
 def process_bank_search(data: List[Dict[str, Any]], search: str) -> List[Dict[str, Any]]:
     """Ищет банковские операции по описанию с использованием регулярных выражений."""
     # Экранируем специальные символы регулярных выражений в строке поиска
-    # и компилируем паттерн с флагом IGNORECASE для регистронезависимого поиска
+    # Компилируем паттерн с флагом IGNORECASE для регистронезависимого поиска
     pattern = re.compile(re.escape(search), re.IGNORECASE)
 
     result = []

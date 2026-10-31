@@ -208,3 +208,20 @@ def rub_transaction() -> dict:
 @pytest.fixture
 def usd_transaction() -> dict:
     return {"id": 2, "operationAmount": {"amount": "100.0", "currency": {"code": "USD"}}}
+
+
+# Фикстуры для process_bank_search
+
+
+@pytest.fixture
+def sample_transactions() -> List[Dict[str, Any]]:
+    """Фикстура: список транзакций с разными описаниями."""
+    return [
+        {"id": 1, "description": "Перевод организации", "state": "EXECUTED"},
+        {"id": 2, "description": "Перевод со счета на счет", "state": "EXECUTED"},
+        {"id": 3, "description": "Открытие вклада", "state": "EXECUTED"},
+        {"id": 4, "description": "Перевод с карты на карту", "state": "CANCELED"},
+        {"id": 5, "description": "ПЕРЕВОД ОРГАНИЗАЦИИ", "state": "EXECUTED"},  # Верхний регистр
+        {"id": 6, "description": "Оплата услуг", "state": "EXECUTED"},
+        {"id": 7, "state": "EXECUTED"},  # Отсутствует description
+    ]
