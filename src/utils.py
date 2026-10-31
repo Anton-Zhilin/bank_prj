@@ -59,6 +59,3 @@ def load_operations(filepath: str) -> List[Dict[str, Any]]:
         # Файл пустой или содержит невалидный JSON
         logger.error(f"Ошибка парсинга JSON в файле {filepath}: {e}")
         return []
-
-
-

@@ -44,4 +44,3 @@ def get_date(date_string: str) -> str:
     # Форматируем объект datetime в строку нужного нам вида
     # %d - день, %m - месяц, %Y - год (4 цифры)
     return date_obj.strftime("%d.%m.%Y")
-

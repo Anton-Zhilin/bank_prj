@@ -1,7 +1,7 @@
 import csv
 import logging
 import os
-from typing import Any, Dict, List, Hashable
+from typing import Any, Dict, Hashable, List
 
 import pandas as pd
 

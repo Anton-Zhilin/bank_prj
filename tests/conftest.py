@@ -1,3 +1,5 @@
+from typing import Any, Dict, List
+
 import pytest
 
 # Фикстуры для get_mask_card_number
@@ -214,7 +216,7 @@ def usd_transaction() -> dict:
 
 
 @pytest.fixture
-def sample_transactions() -> List[Dict[str, Any]]:
+def sample_transactions_for_search() -> List[Dict[str, Any]]:
     """Фикстура: список транзакций с разными описаниями."""
     return [
         {"id": 1, "description": "Перевод организации", "state": "EXECUTED"},
