@@ -1,12 +1,11 @@
 import os
 from typing import Any, Dict, List
 
-from src.utils import load_operations
 from src.file_readers import load_operations_csv, load_operations_excel
-from src.processing import filter_by_state, sort_by_date, process_bank_search
 from src.generators import filter_by_currency
-from src.widget import mask_account_card, get_date
-
+from src.processing import filter_by_state, process_bank_search, sort_by_date
+from src.utils import load_operations
+from src.widget import get_date, mask_account_card
 
 # ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ
 
@@ -97,8 +96,8 @@ def main() -> None:
         return
 
     # Фильтрация по статусу
-    print('Введите статус, по которому необходимо выполнить фильтрацию.')
-    print('Доступные для фильтровки статусы: EXECUTED, CANCELED, PENDING')
+    print("Введите статус, по которому необходимо выполнить фильтрацию.")
+    print("Доступные для фильтровки статусы: EXECUTED, CANCELED, PENDING")
 
     status = get_user_choice("Статус: ", ["EXECUTED", "CANCELED", "PENDING"])
     data = filter_by_state(data, status)
@@ -113,8 +112,7 @@ def main() -> None:
 
     if sort_choice.lower() == "да":
         order_choice = get_user_choice(
-            "Отсортировать по возрастанию или по убыванию? ",
-            ["по возрастанию", "по убыванию"]
+            "Отсортировать по возрастанию или по убыванию? ", ["по возрастанию", "по убыванию"]
         )
         reverse = order_choice.lower() == "по убыванию"
         data = sort_by_date(data, reverse=reverse)
@@ -127,8 +125,7 @@ def main() -> None:
 
     # Фильтрация по слову в описании
     search_choice = get_user_choice(
-        "Отфильтровать список транзакций по определенному слову в описании? Да/Нет: ",
-        ["Да", "Нет"]
+        "Отфильтровать список транзакций по определенному слову в описании? Да/Нет: ", ["Да", "Нет"]
     )
 
     if search_choice.lower() == "да":
