@@ -1,6 +1,8 @@
+from typing import Any, Dict, List
+
 import pytest
 
-from src.processing import filter_by_state, sort_by_date
+from src.processing import filter_by_state, process_bank_operations, process_bank_search, sort_by_date
 
 # 1. Тесты с использованием фикстур
 
@@ -158,3 +160,195 @@ def test_sort_by_date_edge_cases(input_data: list) -> None:
     """
     result = sort_by_date(input_data)
     assert isinstance(result, list)
+
+
+# 5. Тесты функции process_bank_search
+
+
+def test_process_bank_search_basic(sample_transactions_for_search: List[Dict[str, Any]]) -> None:
+    """Проверяет базовый поиск по описанию."""
+    result = process_bank_search(sample_transactions_for_search, "Перевод организации")
+
+    assert len(result) == 2
+    assert result[0]["id"] == 1
+    assert result[1]["id"] == 5
+
+
+def test_process_bank_search_case_insensitive(sample_transactions_for_search: List[Dict[str, Any]]) -> None:
+    """Проверяет регистронезависимый поиск."""
+    # Ищем в нижнем регистре, но находим и верхний регистр
+    result = process_bank_search(sample_transactions_for_search, "перевод организации")
+
+    assert len(result) == 2
+    assert result[0]["id"] == 1
+    assert result[1]["id"] == 5
+
+
+def test_process_bank_search_no_matches(sample_transactions_for_search: List[Dict[str, Any]]) -> None:
+    """Проверяет поиск, когда совпадений нет."""
+    result = process_bank_search(sample_transactions_for_search, "Несуществующая операция")
+
+    assert result == []
+
+
+def test_process_bank_search_empty_string(sample_transactions_for_search: List[Dict[str, Any]]) -> None:
+    """Проверяет поиск по пустой строке (должен вернуть все транзакции с описанием)."""
+    # Пустая строка является подстрокой любой строки (включая саму пустую строку)
+    result = process_bank_search(sample_transactions_for_search, "")
+
+    assert len(result) == 7  # Пустой паттерн совпадает с любой строкой, включая ""
+
+
+def test_process_bank_search_missing_description(sample_transactions_for_search: List[Dict[str, Any]]) -> None:
+    """Проверяет обработку транзакций без ключа description."""
+    result = process_bank_search(sample_transactions_for_search, "Перевод")
+
+    # Транзакция id=7 без description не должна вызвать ошибку
+    assert len(result) == 4
+    assert all("description" in tx for tx in result)
+
+
+def test_process_bank_search_partial_match(sample_transactions_for_search: List[Dict[str, Any]]) -> None:
+    """Проверяет поиск по части слова."""
+    result = process_bank_search(sample_transactions_for_search, "карт")
+
+    assert len(result) == 1
+    assert result[0]["id"] == 4  # "Перевод с карты на карту"
+
+
+@pytest.mark.parametrize(
+    "search_query, expected_ids",
+    [
+        ("Перевод", [1, 2, 4, 5]),
+        ("вклад", [3]),
+        ("ОРГАНИЗАЦИИ", [1, 5]),
+        ("счета", [2]),
+        ("несуществующее", []),
+    ],
+)
+def test_process_bank_search_parametrized(
+    sample_transactions_for_search: List[Dict[str, Any]],
+    search_query: str,
+    expected_ids: List[int],
+) -> None:
+    """Параметризованный тест: проверяет различные поисковые запросы."""
+    result = process_bank_search(sample_transactions_for_search, search_query)
+    result_ids = [tx["id"] for tx in result]
+
+    assert result_ids == expected_ids
+
+
+def test_process_bank_search_special_characters(sample_transactions_for_search: List[Dict[str, Any]]) -> None:
+    """Проверяет поиск со специальными символами регулярных выражений."""
+    # Добавляем транзакцию со спецсимволами
+    transactions_with_special = sample_transactions_for_search + [
+        {"id": 8, "description": "Перевод $100 на счет", "state": "EXECUTED"},
+        {"id": 9, "description": "Оплата (комиссия 5%)", "state": "EXECUTED"},
+    ]
+
+    # Ищем строку со спецсимволами — re.escape должен их экранировать
+    result = process_bank_search(transactions_with_special, "$100")
+
+    assert len(result) == 1
+    assert result[0]["id"] == 8
+
+
+def test_process_bank_search_empty_list() -> None:
+    """Проверяет поиск в пустом списке."""
+    result = process_bank_search([], "Перевод")
+
+    assert result == []
+
+
+# 6. Тесты для функции process_bank_operations
+
+
+def test_process_bank_operations_all_categories(sample_transactions_for_count: List[Dict[str, Any]]) -> None:
+    """Проверяет подсчет всех категорий."""
+    categories = [
+        "Перевод организации",
+        "Перевод со счета на счет",
+        "Открытие вклада",
+        "Перевод с карты на карту",
+        "Оплата услуг",
+    ]
+
+    result = process_bank_operations(sample_transactions_for_count, categories)
+
+    assert result == {
+        "Перевод организации": 2,
+        "Перевод со счета на счет": 2,
+        "Открытие вклада": 1,
+        "Перевод с карты на карту": 1,
+        "Оплата услуг": 1,
+    }
+
+
+def test_process_bank_operations_no_matches(sample_transactions_for_count: List[Dict[str, Any]]) -> None:
+    """Проверяет подсчет, когда ни одна категория не совпадает."""
+    categories = ["Несуществующая категория"]
+
+    result = process_bank_operations(sample_transactions_for_count, categories)
+
+    assert result == {}
+
+
+def test_process_bank_operations_empty_categories(sample_transactions_for_count: List[Dict[str, Any]]) -> None:
+    """Проверяет подсчет с пустым списком категорий."""
+    categories = []
+
+    result = process_bank_operations(sample_transactions_for_count, categories)
+
+    assert result == {}
+
+
+def test_process_bank_operations_empty_data() -> None:
+    """Проверяет подсчет с пустым списком данных."""
+    categories = ["Перевод организации"]
+
+    result = process_bank_operations([], categories)
+
+    assert result == {}
+
+
+def test_process_bank_operations_missing_description(sample_transactions_for_count: List[Dict[str, Any]]) -> None:
+    """Проверяет обработку транзакций без ключа description."""
+    categories = ["Перевод организации"]
+
+    result = process_bank_operations(sample_transactions_for_count, categories)
+
+    # Транзакция id=8 без description не должна вызвать ошибку
+    assert result == {"Перевод организации": 2}
+
+
+def test_process_bank_operations_partial_categories(sample_transactions_for_count: List[Dict[str, Any]]) -> None:
+    """Проверяет подсчет только части категорий."""
+    categories = ["Перевод организации"]
+
+    result = process_bank_operations(sample_transactions_for_count, categories)
+
+    assert result == {"Перевод организации": 2}
+    # Другие категории не должны быть в результате
+    assert "Открытие вклада" not in result
+    assert "Перевод со счета на счет" not in result
+
+
+@pytest.mark.parametrize(
+    "categories, expected_result",
+    [
+        (["Перевод организации"], {"Перевод организации": 2}),
+        (["Открытие вклада"], {"Открытие вклада": 1}),
+        (["Перевод со счета на счет"], {"Перевод со счета на счет": 2}),
+        (["Перевод организации", "Открытие вклада"], {"Перевод организации": 2, "Открытие вклада": 1}),
+        ([], {}),
+    ],
+)
+def test_process_bank_operations_parametrized(
+    sample_transactions_for_count: List[Dict[str, Any]],
+    categories: List[str],
+    expected_result: Dict[str, int],
+) -> None:
+    """Параметризованный тест: проверяет различные наборы категорий."""
+    result = process_bank_operations(sample_transactions_for_count, categories)
+
+    assert result == expected_result
