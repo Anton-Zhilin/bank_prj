@@ -1,0 +1,247 @@
+from typing import Any, Dict, List
+
+import pytest
+
+# Фикстуры для get_mask_card_number
+
+
+@pytest.fixture
+def valid_card_number() -> str:
+    """Фикстура: валидный 16-значный номер карты."""
+    return "7000792289606361"
+
+
+@pytest.fixture
+def another_valid_card() -> str:
+    """Фикстура: ещё один валидный номер карты."""
+    return "1234567890123456"
+
+
+# Фикстуры для get_mask_account
+
+
+@pytest.fixture
+def valid_account_number() -> str:
+    """Фикстура: валидный 20-значный номер счета."""
+    return "12345678901234567890"
+
+
+@pytest.fixture
+def short_account_number() -> str:
+    """Фикстура: номер счета короче ожидаемой длины (19 цифр)."""
+    return "1234567890123456789"
+
+
+# Фикстуры для mask_account_card
+
+
+@pytest.fixture
+def valid_card_string() -> str:
+    """Строка с типом карты и номером."""
+    return "Visa Platinum 7000792289606361"
+
+
+@pytest.fixture
+def valid_account_string() -> str:
+    """Строка со словом 'Счет' и номером счета."""
+    return "Счет 73654108430135874305"
+
+
+# Фикстуры для get_date
+
+
+@pytest.fixture
+def valid_date_string() -> str:
+    """Фикстура: стандартная строка даты в формате ISO 8601 с микросекундами."""
+    return "2024-03-11T02:26:18.671407"
+
+
+# Фикстуры для filter_by_state
+
+
+@pytest.fixture
+def sample_data() -> list:
+    """Фикстура: список словарей с разными статусами."""
+    return [
+        {"id": 1, "state": "EXECUTED", "date": "2019-07-03T18:35:29.512364"},
+        {"id": 2, "state": "EXECUTED", "date": "2018-06-30T02:08:58.425572"},
+        {"id": 3, "state": "CANCELED", "date": "2018-09-12T21:27:25.241689"},
+        {"id": 4, "state": "CANCELED", "date": "2018-10-14T08:21:33.419441"},
+        {"id": 5, "state": "PENDING", "date": "2020-01-15T10:30:00.000000"},
+    ]
+
+
+@pytest.fixture
+def empty_list() -> list:
+    """Фикстура: пустой список."""
+    return []
+
+
+@pytest.fixture
+def data_without_state_key() -> list:
+    """Фикстура: словари без ключа 'state'."""
+    return [
+        {"id": 1, "date": "2020-01-01"},
+        {"id": 2, "amount": 1000},
+        {"id": 3},
+    ]
+
+
+@pytest.fixture
+def data_with_no_matches() -> list:
+    """Фикстура: данные, где нет статуса EXECUTED."""
+    return [
+        {"id": 1, "state": "CANCELED"},
+        {"id": 2, "state": "PENDING"},
+        {"id": 3, "state": "FAILED"},
+    ]
+
+
+# Фикстуры для sort_by_date
+
+
+@pytest.fixture
+def unsorted_data() -> list:
+    """Фикстура: исходный неотсортированный список словарей."""
+    return [
+        {"id": 41428829, "state": "EXECUTED", "date": "2019-07-03T18:35:29.512364"},
+        {"id": 939719570, "state": "EXECUTED", "date": "2018-06-30T02:08:58.425572"},
+        {"id": 594226727, "state": "CANCELED", "date": "2018-09-12T21:27:25.241689"},
+        {"id": 615064591, "state": "CANCELED", "date": "2018-10-14T08:21:33.419441"},
+    ]
+
+
+@pytest.fixture
+def data_with_same_dates() -> list:
+    """Фикстура: данные с одинаковыми датами."""
+    return [
+        {"id": 1, "date": "2020-01-01T00:00:00"},
+        {"id": 2, "date": "2020-01-01T00:00:00"},
+        {"id": 3, "date": "2020-01-01T00:00:00"},
+    ]
+
+
+@pytest.fixture
+def data_with_missing_dates() -> list:
+    """Фикстура: данные, где у некоторых словарей отсутствует ключ 'date'."""
+    return [
+        {"id": 1, "date": "2020-01-01T00:00:00"},
+        {"id": 2},  # нет ключа date
+        {"id": 3, "date": "2019-01-01T00:00:00"},
+    ]
+
+
+# Фикстуры для filter_by_currency
+
+
+@pytest.fixture
+def sample_transactions() -> list:
+    """Фикстура: список транзакций с разными валютами."""
+    return [
+        {
+            "id": 939719570,
+            "state": "EXECUTED",
+            "date": "2018-06-30T02:08:58.425572",
+            "operationAmount": {"amount": "9824.07", "currency": {"name": "USD", "code": "USD"}},
+            "description": "Перевод организации",
+        },
+        {
+            "id": 142264268,
+            "state": "EXECUTED",
+            "date": "2019-04-04T23:20:05.206878",
+            "operationAmount": {"amount": "79114.93", "currency": {"name": "USD", "code": "USD"}},
+            "description": "Перевод со счета на счет",
+        },
+        {
+            "id": 873106923,
+            "state": "EXECUTED",
+            "date": "2019-03-23T01:09:46.296404",
+            "operationAmount": {"amount": "43318.34", "currency": {"name": "руб.", "code": "RUB"}},
+            "description": "Вклад",
+        },
+        {
+            "id": 414288290,
+            "state": "EXECUTED",
+            "date": "2019-07-03T18:35:29.512364",
+            "operationAmount": {"amount": "7000.00", "currency": {"name": "EUR", "code": "EUR"}},
+            "description": "Оплата услуг",
+        },
+    ]
+
+
+@pytest.fixture
+def empty_transactions() -> list:
+    """Фикстура: пустой список транзакций."""
+    return []
+
+
+@pytest.fixture
+def malformed_transactions() -> list:
+    """Фикстура: транзакции с отсутствующими или некорректными ключами."""
+    return [
+        {"id": 1, "description": "Нет operationAmount"},
+        {"id": 2, "operationAmount": {"amount": "100"}},  # Нет currency
+        {"id": 3, "operationAmount": {"currency": {"name": "RUB"}}},  # Нет code
+        {"id": 4, "operationAmount": {"currency": {"name": "USD", "code": "USD"}}},
+    ]
+
+
+# Фикстуры для transaction_descriptions
+
+
+@pytest.fixture
+def transactions_missing_description() -> list:
+    """Фикстура: транзакции, где у одной из них отсутствует ключ 'description'."""
+    return [
+        {"id": 1, "description": "Перевод организации"},
+        {"id": 2, "state": "EXECUTED"},  # Отсутствует description
+        {"id": 3, "description": "Оплата услуг"},
+    ]
+
+
+# Фикстуры для get_amount_in_rub
+
+
+@pytest.fixture
+def rub_transaction() -> dict:
+    return {"id": 1, "operationAmount": {"amount": "1500.50", "currency": {"code": "RUB"}}}
+
+
+@pytest.fixture
+def usd_transaction() -> dict:
+    return {"id": 2, "operationAmount": {"amount": "100.0", "currency": {"code": "USD"}}}
+
+
+# Фикстуры для process_bank_search
+
+
+@pytest.fixture
+def sample_transactions_for_search() -> List[Dict[str, Any]]:
+    """Фикстура: список транзакций с разными описаниями."""
+    return [
+        {"id": 1, "description": "Перевод организации", "state": "EXECUTED"},
+        {"id": 2, "description": "Перевод со счета на счет", "state": "EXECUTED"},
+        {"id": 3, "description": "Открытие вклада", "state": "EXECUTED"},
+        {"id": 4, "description": "Перевод с карты на карту", "state": "CANCELED"},
+        {"id": 5, "description": "ПЕРЕВОД ОРГАНИЗАЦИИ", "state": "EXECUTED"},  # Верхний регистр
+        {"id": 6, "description": "Оплата услуг", "state": "EXECUTED"},
+        {"id": 7, "state": "EXECUTED"},  # Отсутствует description
+    ]
+
+
+# Фикстуры для тестов process_bank_operations
+
+
+@pytest.fixture
+def sample_transactions_for_count() -> List[Dict[str, Any]]:
+    """Фикстура: список транзакций с разными описаниями для подсчета."""
+    return [
+        {"id": 1, "description": "Перевод организации", "state": "EXECUTED"},
+        {"id": 2, "description": "Перевод со счета на счет", "state": "EXECUTED"},
+        {"id": 3, "description": "Открытие вклада", "state": "EXECUTED"},
+        {"id": 4, "description": "Перевод с карты на карту", "state": "CANCELED"},
+        {"id": 5, "description": "Перевод организации", "state": "EXECUTED"},
+        {"id": 6, "description": "Оплата услуг", "state": "EXECUTED"},
+        {"id": 7, "description": "Перевод со счета на счет", "state": "EXECUTED"},
+        {"id": 8, "state": "EXECUTED"},  # Отсутствует description
+    ]
